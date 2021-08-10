@@ -1,5 +1,6 @@
 import mysql from 'mysql2';
 import express from 'express';
+import cors from 'cors';
 
 // create the connection to database
 const connection = mysql.createConnection({
@@ -24,6 +25,7 @@ const viewClient = (req,res) => {
 }
 
   const app = express();
+  app.use(cors());
   app.listen(3000);
   app.get('/',viewClient);
   
