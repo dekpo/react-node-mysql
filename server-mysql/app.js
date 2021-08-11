@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
   });
 
   // simple query
-const viewClient = (req,res) => {
+const listClients = (req,res) => {
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
     const page = req.query.page ? parseInt(req.query.page-1)*limit : 0;
     connection.query(
@@ -24,8 +24,19 @@ const viewClient = (req,res) => {
   )
 }
 
+const countClients = (req,res) => {
+  connection.query(
+    'SELECT COUNT(ClientId) AS total FROM `client`',
+    function(err, results, fields) {
+      res.send(results); // results contains rows returned by server
+      /* console.log(fields); // fields contains extra meta data about results, if available */
+    }
+  )
+}
+
   const app = express();
   app.use(cors());
   app.listen(3000);
-  app.get('/',viewClient);
+  app.get('/clients',listClients);
+  app.get('/clients/count',countClients);
   
